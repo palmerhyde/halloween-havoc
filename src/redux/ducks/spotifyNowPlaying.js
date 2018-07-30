@@ -1,9 +1,9 @@
 import { delay } from 'redux-saga'
 import { takeLatest, call, put } from "redux-saga/effects";
 import SpotifyWebApi from 'spotify-web-api-js';
+import * as Vibrant from 'node-vibrant'
 
 const spotifyApi = new SpotifyWebApi();
-var timer = 0;
 
 // TODO - do not hard code spotify token
 spotifyApi.setAccessToken('');
@@ -49,8 +49,10 @@ function* workerNowPlayingSaga() {
         const nowPlaying = response;
 
         yield put({ type: GET_SUCCESS, nowPlaying });
-        timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;
-        //setTimeout(dispatchFromTimer, 5000);
+        // TODO: get from state not nowPlaying
+        const dominantColours = yield call(getDominantColours, nowPlaying.item.album.images[0].url);
+        console.log(dominantColours);
+        let timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;
         yield delay(timer);
         yield put(getNowPlaying());
 
@@ -64,4 +66,16 @@ function fetchNowPlaying() {
     return spotifyApi.getMyCurrentPlaybackState();
 }
 
-// Timer for when to dispatch again.
+function getDominantColours(url) {
+    return Vibrant.from(url).getPalette()
+        .then(response => {
+            console.log(response);
+            const keys = Object.keys(response);
+            const addPalette = (acc, paletteName) => ({
+                ...acc,
+                [paletteName]: response[paletteName] && response[paletteName].getRgb()
+            });
+
+            return keys.reduce(addPalette, {});
+        })
+}
