@@ -1,0 +1,11 @@
+{
+  "monsters": [
+    { "id": 1, "title": "Powerslave Eddie", "dns" : "powerslave.local" },
+    { "id": 2, "title": "Book of Souls Eddie", "dns" : "bookofsouls.local" },
+    { "id": 3, "title": "Papa Emeritus II", "dns" : "ghost.local" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "hello momiz" }
+}

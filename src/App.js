@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { getMonsters } from './redux/ducks/monsters';
+import { getDog } from './redux/ducks/dogs';
+import { getNowPlaying } from './redux/ducks/spotifyNowPlaying';
 import reactCSS from 'reactcss'
 import { ChromePicker } from 'react-color';
 import {UserCard} from 'react-ui-cards';
+import NowPlaying from './components/nowPlaying'
 import logo from './logo.svg';
 import './App.css';
 
@@ -29,7 +34,7 @@ class App extends Component {
         this.setState({ color: color.rgb })
     };
     render() {
-
+        const { fetching, dog, nowPlaying, onRequestMonsters, onRequestDog, onRequestNowPlaying, error } = this.props;
         const styles = reactCSS({
             'default': {
                 color: {
@@ -55,7 +60,7 @@ class App extends Component {
                     top: '0px',
                     right: '0px',
                     bottom: '0px',
-                    left: '0px',
+                    left: ',0px',
                 },
             },
         });
@@ -63,9 +68,21 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={dog || logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Halloween Havoc</h1>
         </header>
+
+          {fetching ? (
+              <button disabled>Fetching...</button>
+          ) : (
+              <div>
+                  <button onClick={onRequestMonsters}>Request monsters</button>
+                  <button onClick={onRequestDog}>Request dog</button>
+                  <button onClick={onRequestNowPlaying}>Request now playing</button>
+              </div>
+          )}
+
+          {error && <p style={{ color: "red" }}>Uh oh - something went wrong!</p>}
         <p className="App-intro">
           Select a colour.
         </p>
@@ -79,6 +96,13 @@ class App extends Component {
               </div> : null }
 
           </div>
+
+          {nowPlaying && nowPlaying.nowPlaying ? (
+              <NowPlaying nowPlaying={nowPlaying.nowPlaying}/>
+          ) : (
+              null
+          )}
+
           <h2>
               Monster cards
           </h2>
@@ -153,4 +177,21 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        fetching: state.fetching,
+        dog: state.dog,
+        error: state.error,
+        nowPlaying : state.nowPlaying
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onRequestMonsters: () => dispatch(getMonsters()),
+        onRequestDog: () => dispatch(getDog()),
+        onRequestNowPlaying: () => dispatch(getNowPlaying())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
