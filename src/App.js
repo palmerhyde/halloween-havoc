@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { getMonsters } from './redux/ducks/monsters';
-import { getDog } from './redux/ducks/dogs';
 import { getNowPlaying } from './redux/ducks/spotifyNowPlaying';
 import reactCSS from 'reactcss'
 import { ChromePicker } from 'react-color';
@@ -34,7 +33,7 @@ class App extends Component {
         this.setState({ color: color.rgb })
     };
     render() {
-        const { fetching, dog, nowPlaying, onRequestMonsters, onRequestDog, onRequestNowPlaying, error } = this.props;
+        const { fetching, nowPlaying, onRequestMonsters, onRequestNowPlaying, error } = this.props;
         const styles = reactCSS({
             'default': {
                 color: {
@@ -68,7 +67,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={dog || logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Halloween Havoc</h1>
         </header>
 
@@ -77,7 +76,6 @@ class App extends Component {
           ) : (
               <div>
                   <button onClick={onRequestMonsters}>Request monsters</button>
-                  <button onClick={onRequestDog}>Request dog</button>
                   <button onClick={onRequestNowPlaying}>Request now playing</button>
               </div>
           )}
@@ -180,7 +178,6 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         fetching: state.fetching,
-        dog: state.dog,
         error: state.error,
         nowPlaying : state.nowPlaying
     };
@@ -189,7 +186,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onRequestMonsters: () => dispatch(getMonsters()),
-        onRequestDog: () => dispatch(getDog()),
         onRequestNowPlaying: () => dispatch(getNowPlaying())
     };
 };
