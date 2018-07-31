@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "db": "json-server --watch ./public/monsters.json --port 3004 --static ./public",
+    "db": "json-server --watch ./src/data/monsters.json --port 3004 --static ./public",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
