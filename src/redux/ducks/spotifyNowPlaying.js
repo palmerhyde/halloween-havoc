@@ -10,7 +10,7 @@ const spotifyApi = new SpotifyWebApi();
 // set token in the now playing component.
 // send to state
 // how do you get access to state within a saga?
-spotifyApi.setAccessToken('');
+spotifyApi.setAccessToken('BQAHZaO8y_kjFjy4OHyoEXH-KEO8u_T5bwuySxLfz3xXX18W5mIa3WUenSt4PZlXVTLbVoC7OvQ3LaCBdnPgND7vEfjXYuITUm47eN6Fjhi1FwcKV4OMNEakV1hJ1Qj57H_dkKqQ5emeIwOPcmewvYQ');
 
 // Actions
 const GET = 'SPOTIFY_NOW_PLAYING_API_GET_REQUEST';
@@ -67,7 +67,8 @@ function* workerNowPlayingSaga() {
         yield put(getNowPlaying());
 
     } catch (error) {
-        yield put({ type: GET_FAILURE, error });
+        console.log(error.response);
+        yield put({ type: GET_FAILURE, error: error.response });
     }
 }
 

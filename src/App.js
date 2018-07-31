@@ -4,8 +4,8 @@ import { getMonsters } from './redux/ducks/monsters';
 import { getNowPlaying } from './redux/ducks/spotifyNowPlaying';
 import reactCSS from 'reactcss'
 import { ChromePicker } from 'react-color';
-import {UserCard} from 'react-ui-cards';
 import NowPlaying from './components/nowPlaying'
+import MonsterCard from './components/monsterCard'
 import logo from './logo.svg';
 import './App.css';
 
@@ -20,6 +20,11 @@ class App extends Component {
         },
     };
 
+    componentDidMount() {
+        const { onRequestMonsters, onRequestNowPlaying } = this.props;
+        onRequestMonsters();
+        onRequestNowPlaying();
+    }
 
     handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -33,7 +38,7 @@ class App extends Component {
         this.setState({ color: color.rgb })
     };
     render() {
-        const { fetching, nowPlaying, onRequestMonsters, onRequestNowPlaying, error } = this.props;
+        const { fetching, nowPlaying, error, monsters } = this.props;
         const styles = reactCSS({
             'default': {
                 color: {
@@ -74,10 +79,7 @@ class App extends Component {
           {fetching ? (
               <button disabled>Fetching...</button>
           ) : (
-              <div>
-                  <button onClick={onRequestMonsters}>Request monsters</button>
-                  <button onClick={onRequestNowPlaying}>Request now playing</button>
-              </div>
+              null
           )}
 
           {error && <p style={{ color: "red" }}>Uh oh - something went wrong!</p>}
@@ -101,75 +103,16 @@ class App extends Component {
               null
           )}
 
-          <h2>
-              Monster cards
-          </h2>
-          <div className='card-container'>
-              <UserCard
-                  header='https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg'
-                  avatar='https://images-na.ssl-images-amazon.com/images/I/71v6kW3BNQL._SX425_.jpg'
-                  name='Eddie'
-                  positionName='Powerslave'
-                  stats={[
-                      {
-                          name: 'Powerslave',
-                          value: 'Album'
-                      },
-                      {
-                          name: 'Red',
-                          value: 'Colour'
-                      },
-                      {
-                          name: 'false',
-                          value: 'Active'
-                      }
-                  ]}
-              />
-          </div>
-          <div className='card-container'>
-              <UserCard
-                  header='https://i0.wp.com/www.goodmusicmatters.net/wp-content/uploads/2016/04/Book-Of-Souls-Art.jpg'
-                  avatar='https://cdn.shopify.com/s/files/1/0744/5517/products/iron-maiden-book-souls-mask-2_large.jpg?v=1527556324'
-                  name='Eddie'
-                  positionName='Book of Souls'
-                  stats={[
-                      {
-                          name: 'Book of souls',
-                          value: 'Album'
-                      },
-                      {
-                          name: 'Green',
-                          value: 'Colour'
-                      },
-                      {
-                          name: 'false',
-                          value: 'Active'
-                      }
-                  ]}
-              />
-          </div>
-          <div className='card-container'>
-              <UserCard
-                  header='http://assets.blabbermouth.net/media/ghostmeliorapromobwbiggernew_638.jpg'
-                  avatar='https://images.maskworld.com/is/image/maskworld/bigview/ghost-papa-emeritus-ii-miter-and-mask--mw-132812-1.jpg'
-                  name='Papa Emeritus II'
-                  positionName='Ghost'
-                  stats={[
-                      {
-                          name: 'Ghost',
-                          value: 'Artist'
-                      },
-                      {
-                          name: 'Silver',
-                          value: 'Colour'
-                      },
-                      {
-                          name: 'false',
-                          value: 'Active'
-                      }
-                  ]}
-              />
-          </div>
+          {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
+              monsters.monsters.map((monster, idx) => (
+                  <MonsterCard monster={monster}/>
+              ))
+          )
+              : (
+                  <div>Loading Monsters...</div>
+              )
+          }
+
       </div>
     );
   }
@@ -179,7 +122,8 @@ const mapStateToProps = state => {
     return {
         fetching: state.fetching,
         error: state.error,
-        nowPlaying : state.nowPlaying
+        nowPlaying : state.nowPlaying,
+        monsters: state.monsters
     };
 };
 
