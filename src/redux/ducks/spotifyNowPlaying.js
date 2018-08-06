@@ -10,7 +10,7 @@ const spotifyApi = new SpotifyWebApi();
 // set token in the now playing component.
 // send to state
 // how do you get access to state within a saga?
-spotifyApi.setAccessToken('BQAHZaO8y_kjFjy4OHyoEXH-KEO8u_T5bwuySxLfz3xXX18W5mIa3WUenSt4PZlXVTLbVoC7OvQ3LaCBdnPgND7vEfjXYuITUm47eN6Fjhi1FwcKV4OMNEakV1hJ1Qj57H_dkKqQ5emeIwOPcmewvYQ');
+spotifyApi.setAccessToken('BQBCj8HZB7GDMFHj58kwqrB4o2iIzwWwusOleTLILbHAJxo8uiYuSZJ750MK4PZ0tfBoXItiRhS6mab9M2qo4NH8q7ufxynT9MGfFfS6G51qJYHDX_D3HqEaUK-CMLlb-Z3jQ2_9a3Z0oMIrI0qBBSE');
 
 // Actions
 const GET = 'SPOTIFY_NOW_PLAYING_API_GET_REQUEST';
@@ -81,6 +81,7 @@ function fetchNowPlaying() {
 }
 
 function getDominantColours(url) {
+    // TODO: understand this transformation
     return Vibrant.from(url).getPalette()
         .then(response => {
             console.log(response);

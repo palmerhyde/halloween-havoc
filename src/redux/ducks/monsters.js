@@ -72,6 +72,16 @@ function* workerMonsterSaga() {
 
 function* workerSetMonsterColourSaga({ payload: colours }) {
     console.log(colours);
+
+    // TODO: not all colors have values,
+    // DarkMuted
+    // DarkVibrant
+    // LightMuted
+    // LightVibrant
+    // Muted
+    // Vibrant
+    // Default
+
     let colour = {
         'r' : colours.Vibrant[0],
         'g' : colours.Vibrant[1],

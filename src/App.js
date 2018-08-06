@@ -103,15 +103,18 @@ class App extends Component {
               null
           )}
 
+          <h2>Monsters</h2>
+          <div className='card-container'>
           {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
               monsters.monsters.map((monster, idx) => (
-                  <MonsterCard monster={monster}/>
+                  <MonsterCard monster={monster} key={`monster-${idx}`}/>
               ))
           )
               : (
                   <div>Loading Monsters...</div>
               )
           }
+          </div>
 
       </div>
     );

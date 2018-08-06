@@ -1,37 +1,173 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 50px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 50px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 100px;
-  padding: 20px;
-  color: white;
+    background-color: #222;
+    height: 100px;
+    padding: 20px;
+    color: white;
 }
 
 .App-title {
-  font-size: 1.3em;
+    font-size: 1.3em;
 }
 
 .App-intro {
-  font-size: large;
-}
-
-.card-container {
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
+    font-size: large;
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
+
+.card {
+    position: relative;
+    max-width: 100%;
+    width: 250px;
+    min-width: 250px;
+    min-height: 350px;
+    display: flex;
+    flex-flow: column;
+    background-color: #ecf0f1;
+    border-radius: 0.25rem;
+    margin: 1rem;
+    user-select: none;
+    transition: 0.25s
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 10px -10px #7f8c8d
+}
+
+.user-card-header {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    height: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.25rem 0.25rem 0 0
+}
+
+.user-card-avatar {
+    position: absolute;
+    display: flex;
+    flex: 0 0 auto;
+    height: 6rem;
+    width: 6rem;
+    top: calc(50% - 3rem);
+    left: calc(50% - 3rem);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 100%;
+    z-index: 10
+}
+
+.user-card-body {
+    padding: 1rem;
+    padding-top: 4rem
+}
+
+.user-card-body .user-card-name {
+    display: flex;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: #2c3e50
+}
+
+.user-card-body .user-card-position-name {
+    display: flex;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #7f8c8d
+}
+
+.user-card-stats {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    font-size: 0.75rem
+}
+
+.stat-container {
+    border-top: 2px solid rgba(127, 140, 141, 0.2);
+    border-right: 2px solid rgba(127, 140, 141, 0.2);
+    min-width: 4rem;
+    padding: 0.25rem
+}
+
+.stat-container:last-child {
+    border-right: none
+}
+
+.stat-name {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    color: #7f8c8d
+}
+
+.stat-value {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    color: #2c3e50;
+    font-weight: bold
+}
+
+.card-link {
+    display: flex;
+    text-decoration: none
+}
+
+h2 {
+    color: #2c3e50;
+    margin: 2rem 0 0 2rem
+}
+
+.links {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px
+}
+
+.links a {
+    text-decoration: none;
+    margin: 1rem
+}
+
+.card-container {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box
+}
+
+@media screen and (max-width: 1100px) {
+    .card-container {
+        flex-flow: column
+    }
+}
+
+
+
+
