@@ -5,9 +5,10 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 209,
-        "g": 133,
-        "b": 40
+        "r": 228,
+        "g": 169,
+        "b": 15,
+        "a": 1
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
@@ -18,9 +19,10 @@
       "title": "Book of Souls Eddie",
       "dns": "bookofsouls.local",
       "colour": {
-        "r": 0,
-        "g": 255,
-        "b": 0
+        "r": 178,
+        "g": 206,
+        "b": 192,
+        "a": 1
       },
       "artist": "iron maiden",
       "header": "https://i0.wp.com/www.goodmusicmatters.net/wp-content/uploads/2016/04/Book-Of-Souls-Art.jpg",
@@ -31,22 +33,24 @@
       "title": "Papa Emeritus II",
       "dns": "ghost.local",
       "colour": {
-        "r": 0,
-        "g": 0,
-        "b": 255
+        "r": 39,
+        "g": 39,
+        "b": 41,
+        "a": 1
       },
       "artist": "ghost",
       "header": "http://assets.blabbermouth.net/media/ghostmeliorapromobwbiggernew_638.jpg",
       "avatar": "https://images.maskworld.com/is/image/maskworld/bigview/ghost-papa-emeritus-ii-miter-and-mask--mw-132812-1.jpg"
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "Slimer",
       "dns": "slimer.local",
       "colour": {
-        "r": 0,
-        "g": 0,
-        "b": 255
+        "r": 37,
+        "g": 72,
+        "b": 55,
+        "a": 1
       },
       "artist": "ray parker jr",
       "header": "https://resizing.flixster.com/pCeRPEI8u6L8_bTc1RZyZTx3ddg=/2893x1395/v1.bjsyMjgzNzI7ajsxNzc3NzsxMjAwOzI4OTM7MTM5NQ",

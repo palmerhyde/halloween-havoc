@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga'
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { setMonsterColours } from './monsters'
+import { setMonstersDominantColours } from './monsters'
 import SpotifyWebApi from 'spotify-web-api-js';
 import * as Vibrant from 'node-vibrant'
 
@@ -59,7 +59,7 @@ function* workerNowPlayingSaga() {
         // TODO: run the next two yields in parallel
         const dominantColours = yield call(getDominantColours, nowPlaying.item.album.images[0].url);
         // Set monster colour to dominant colours
-        yield put(setMonsterColours(dominantColours));
+        yield put(setMonstersDominantColours(dominantColours));
 
         // Call now playing when the current song has finished
         let timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;

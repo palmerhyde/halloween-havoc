@@ -7,9 +7,14 @@ import {getNowPlaying} from "./spotifyNowPlaying";
 const GET = 'MONSTER_API_GET_REQUEST';
 const GET_SUCCESS = 'MONSTER_API_GET_REQUEST_SUCCESS';
 const GET_FAILURE = 'MONSTER_API_GET_REQUEST_FAILURE';
-const SET_MONSTER_COLOURS = 'SET_MONSTER_COLOURS';
-const SET_MONSTER_COLOURS_SUCCESS = 'SET_MONSTER_COLOURS_SUCCESS';
-const SET_MONSTER_COLOURS_FAILURE = 'SET_MONSTER_COLOURS_FAILURE';
+
+const SET_MONSTERS_DOMINANT_COLOURS = 'SET_MONSTERS_DOMINANT_COLOURS';
+const SET_MONSTERS_DOMINANT_COLOURS_SUCCESS = 'SET_MONSTERS_DOMINANT_COLOURS_SUCCESS';
+const SET_MONSTERS_DOMINANT_COLOURS_FAILURE = 'SET_MONSTERS_DOMINANT_COLOURS_FAILURE';
+
+const SET_MONSTER_COLOUR = 'SET_MONSTER_COLOUR';
+const SET_MONSTER_COLOUR_SUCCESS = 'SET_MONSTER_COLOUR_SUCCESS';
+const SET_MONSTER_COLOUR_FAILURE = 'SET_MONSTER_COLOUR_FAILURE';
 
 // Reducer
 const initialState = [];
@@ -23,8 +28,6 @@ export default function monstersReducer(state = initialState, action) {
             return { ...state, fetching: false, monsters: action.monsters };
         case GET_FAILURE:
             return { ...state, fetching: false, monsters: [], error: action.error };
-        //case SET_MONSTER_COLOURS:
-          //  return {...state};
         default:
             return state;
     }
@@ -39,9 +42,16 @@ export function getMonsters() {
 
 
 // Action Creators
-export function setMonsterColours(payload) {
+export function setMonstersDominantColours(payload) {
     return {
-        type: SET_MONSTER_COLOURS,
+        type: SET_MONSTERS_DOMINANT_COLOURS,
+        payload: payload
+    };
+}
+
+export function setMonsterColour(payload) {
+    return {
+        type: SET_MONSTER_COLOUR,
         payload: payload
     };
 }
@@ -53,16 +63,18 @@ export function* watcherMonsterSaga() {
     yield takeLatest(GET, workerMonsterSaga);
 }
 
-export function* watcherSetMonsterColoursSaga() {
-    yield takeLatest(SET_MONSTER_COLOURS, workerSetMonsterColourSaga);
+export function* watcherSetMonstersDominantColoursSaga() {
+    yield takeLatest(SET_MONSTERS_DOMINANT_COLOURS, workerSetMonstersDominantColoursSaga);
+}
+
+export function* watcherSetMonsterColourSaga() {
+    yield takeLatest(SET_MONSTER_COLOUR, workerSetMonsterColourSaga);
 }
 
 function* workerMonsterSaga() {
     try {
         const response = yield call(fetchMonsters);
-        console.log('response:' + JSON.stringify(response));
         const monsters = response.data;
-
         yield put({ type: GET_SUCCESS, monsters });
 
     } catch (error) {
@@ -70,33 +82,55 @@ function* workerMonsterSaga() {
     }
 }
 
-function* workerSetMonsterColourSaga({ payload: colours }) {
-    console.log(colours);
+function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
+    try {
+        console.log(colours);
 
-    // TODO: not all colors have values,
-    // DarkMuted
-    // DarkVibrant
-    // LightMuted
-    // LightVibrant
-    // Muted
-    // Vibrant
-    // Default
+        // TODO: not all colors have values,
+        // DarkMuted
+        // DarkVibrant
+        // LightMuted
+        // LightVibrant
+        // Muted
+        // Vibrant
+        // Default
 
-    let colour = {
-        'r' : colours.Vibrant[0],
-        'g' : colours.Vibrant[1],
-        'b' : colours.Vibrant[2]
-    };
+        let colour = {
+            'r': colours.Vibrant[0],
+            'g': colours.Vibrant[1],
+            'b': colours.Vibrant[2]
+        };
 
-    // For each monster
-    let monsters = yield select((state) => state.monsters);
-    console.log(monsters);
+        // For each monster
+        let monsters = yield select((state) => state.monsters);
 
-    // Filter monsters where artist in nowPlaying.artists
-    const response = yield call(setMonsterColor, monsters.monsters[0], colour);
+        // Filter monsters where artist in nowPlaying.artists
+        const response = yield call(putMonsterColor, monsters.monsters[0], colour);
 
-    // Refetch monsters to get fresh state
-    yield put(getMonsters());
+        // Refetch monsters to get fresh state
+        yield put(getMonsters());
+        yield put({ type: SET_MONSTERS_DOMINANT_COLOURS_SUCCESS, monsters });
+    } catch (error) {
+        yield put({ type: SET_MONSTERS_DOMINANT_COLOURS_FAILURE, error });
+    }
+}
+
+function* workerSetMonsterColourSaga({ payload: payload }) {
+    try {
+        console.log('getting here');
+        console.log(payload);
+        let colour = payload.colour;
+        let monster = payload.monster;
+
+        // Filter monsters where artist in nowPlaying.artists
+        const response = yield call(putMonsterColor, monster, colour);
+
+        // Refetch monsters to get fresh state
+        yield put(getMonsters());
+        yield put({ type: SET_MONSTER_COLOUR_SUCCESS });
+    } catch (error) {
+        yield put({ type: SET_MONSTER_COLOUR_FAILURE, error });
+    }
 }
 
 // Services
@@ -107,7 +141,7 @@ function fetchMonsters() {
     });
 }
 
-function setMonsterColor(monster, colour) {
+function putMonsterColor(monster, colour) {
     monster.colour = colour;
     return axios({
         method: "put",
