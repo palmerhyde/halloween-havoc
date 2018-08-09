@@ -61,6 +61,17 @@
     border-radius: 0.25rem 0.25rem 0 0
 }
 
+.album-card-header {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    height: 250px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.25rem 0.25rem 0 0
+}
+
 .user-card-avatar {
     position: absolute;
     display: flex;
@@ -78,7 +89,12 @@
 
 .user-card-body {
     padding: 1rem;
-    padding-top: 4rem
+    padding-top: 4rem;
+}
+
+.album-card-body {
+    padding: 1rem;
+    padding-top: 1rem;
 }
 
 .user-card-body .user-card-name {

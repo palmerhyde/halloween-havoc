@@ -38,7 +38,7 @@ class monsterCard extends React.PureComponent {
                     width: '36px',
                     height: '14px',
                     borderRadius: '2px',
-                    background: `rgba(${ monster.colour.r }, ${ monster.colour.g }, ${ monster.colour.b })`,
+                    background: `rgb(${ monster.colour.r }, ${ monster.colour.g }, ${ monster.colour.b })`,
                 },
                 swatch: {
                     padding: '5px',
@@ -58,9 +58,11 @@ class monsterCard extends React.PureComponent {
                     right: '0px',
                     bottom: '0px',
                     left: ',0px',
-                },
-            },
+                }
+            }
         });
+
+        document.body.style.backgroundColor = `rgb(${ monster.colour.r }, ${ monster.colour.g }, ${ monster.colour.b })`;
 
         return (
             <div className="card-link">
@@ -111,7 +113,7 @@ class monsterCard extends React.PureComponent {
     }
 }
 
-// TODO: validate vshape props
+// TODO: validate shape props
 monsterCard.propTypes = {
     monster: PropTypes.object.isRequired,
     onSetMonsterColour: PropTypes.func.isRequired

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { getMonsters, setMonsterColour } from './redux/ducks/monsters';
-import { getNowPlaying } from './redux/ducks/spotifyNowPlaying';
-import NowPlaying from './components/nowPlaying'
+import { getNowPlaying, setSpotifyAuthToken } from './redux/ducks/spotifyNowPlaying';
+import NowPlaying from './components/nowPlaying';
 import MonsterCard from './components/monsterCard'
 import logo from './logo.svg';
 import './App.css';
@@ -10,13 +10,13 @@ import './App.css';
 class App extends Component {
 
     componentDidMount() {
-        const { onRequestMonsters, onRequestNowPlaying } = this.props;
+        const { onRequestMonsters, onRequestNowPlaying, monsters } = this.props;
         onRequestMonsters();
         onRequestNowPlaying();
     }
 
     render() {
-        const { fetching, nowPlaying, error, monsters, onSetMonsterColour } = this.props;
+        const { fetching, nowPlaying, error, monsters, onSetMonsterColour, onSetSpotifyAuthToken } = this.props;
 
     return (
       <div className="App">
@@ -33,11 +33,7 @@ class App extends Component {
 
           {error && <p style={{ color: "red" }}>Uh oh - something went wrong!</p>}
 
-          {nowPlaying && nowPlaying.nowPlaying ? (
-              <NowPlaying nowPlaying={nowPlaying.nowPlaying}/>
-          ) : (
-              null
-          )}
+          <NowPlaying nowPlaying={nowPlaying} onSetSpotifyAuthToken={onSetSpotifyAuthToken}/>
 
           <h2>Monsters</h2>
           <div className='card-container'>
@@ -45,6 +41,7 @@ class App extends Component {
               monsters.monsters.map((monster, idx) => (
                   <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`monster-${idx}`}/>
               ))
+
           )
               : (
                   <div>Loading Monsters...</div>
@@ -70,7 +67,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onRequestMonsters: () => dispatch(getMonsters()),
         onRequestNowPlaying: () => dispatch(getNowPlaying()),
-        onSetMonsterColour: (payload) => dispatch(setMonsterColour(payload))
+        onSetMonsterColour: (payload) => dispatch(setMonsterColour(payload)),
+        onSetSpotifyAuthToken: (payload) => dispatch(setSpotifyAuthToken(payload))
     };
 };
 

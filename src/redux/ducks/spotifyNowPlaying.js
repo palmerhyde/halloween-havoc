@@ -1,24 +1,27 @@
 import { delay } from 'redux-saga'
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { setMonstersDominantColours } from './monsters'
 import SpotifyWebApi from 'spotify-web-api-js';
 import * as Vibrant from 'node-vibrant'
 
 const spotifyApi = new SpotifyWebApi();
 
-// TODO - do not hard code spotify token
-// set token in the now playing component.
-// send to state
-// how do you get access to state within a saga?
-spotifyApi.setAccessToken('BQBCj8HZB7GDMFHj58kwqrB4o2iIzwWwusOleTLILbHAJxo8uiYuSZJ750MK4PZ0tfBoXItiRhS6mab9M2qo4NH8q7ufxynT9MGfFfS6G51qJYHDX_D3HqEaUK-CMLlb-Z3jQ2_9a3Z0oMIrI0qBBSE');
-
 // Actions
 const GET = 'SPOTIFY_NOW_PLAYING_API_GET_REQUEST';
 const GET_SUCCESS = 'SPOTIFY_NOW_PLAYING_GET_REQUEST_SUCCESS';
 const GET_FAILURE = 'SPOTIFY_NOW_PLAYING_GET_REQUEST_FAILURE';
 
+const SET_SPOTIFY_AUTH_TOKEN = 'SET_SPOTIFY_AUTH_TOKEN';
+const SET_SPOTIFY_AUTH_TOKEN_SUCCESS = 'SET_SPOTIFY_AUTH_TOKEN_SUCCESS';
+const SET_SPOTIFY_AUTH_TOKEN_FAILURE = 'SET_SPOTIFY_AUTH_TOKEN_FAILURE';
+
 // Reducer
-const initialState = null;
+const initialState = {
+    fetching: true,
+    error: '',
+    nowPlaying: null,
+    authToken: ''
+};
 
 export default function spotifyNowPlayingReducer(state = initialState, action) {
     switch (action.type) {
@@ -28,6 +31,8 @@ export default function spotifyNowPlayingReducer(state = initialState, action) {
             return { ...state, fetching: false, nowPlaying: action.nowPlaying };
         case GET_FAILURE:
             return { ...state, fetching: false, nowPlaying: null, error: action.error };
+        case SET_SPOTIFY_AUTH_TOKEN:
+            return { ...state, authToken: action.authToken};
         default:
             return state;
     }
@@ -40,35 +45,73 @@ export function getNowPlaying() {
     };
 }
 
+export function setSpotifyAuthToken(authToken) {
+    return {
+        type: SET_SPOTIFY_AUTH_TOKEN,
+        authToken: authToken
+    };
+}
+
 // Selectors
 
 // Sagas
+
+// Watchers
 export function* watcherNowPlayingSaga() {
     yield takeLatest(GET, workerNowPlayingSaga);
 }
 
-function* workerNowPlayingSaga() {
-    try {
-        const response = yield call(fetchNowPlaying);
-        const nowPlaying = response;
+export function* watcherSetNowPlayingAuthTokenSaga() {
+    yield takeLatest(SET_SPOTIFY_AUTH_TOKEN, workerNowPlayingSaga);
+}
 
+// Workers
+function* workerNowPlayingSaga() {
+    const RETRY_TIMER = 10000;
+
+    try {
+        let accessToken = yield select((state) => state.nowPlaying.authToken);
+        spotifyApi.setAccessToken(accessToken);
+        const nowPlaying = yield call(fetchNowPlaying);
+
+        console.log('now playing' + nowPlaying);
+
+        if (!nowPlaying) {
+            let error = {
+                'response': {
+                    'error' : {
+                        'status': 401,
+                        'message': 'No song playing'
+                    }
+                }
+            };
+
+            error.response = JSON.stringify(error.response);
+            throw(error);
+        }
 
         // TODO: validate response.
         yield put({ type: GET_SUCCESS, nowPlaying });
-        // TODO: get from state not nowPlaying
+
         // TODO: run the next two yields in parallel
         const dominantColours = yield call(getDominantColours, nowPlaying.item.album.images[0].url);
         // Set monster colour to dominant colours
         yield put(setMonstersDominantColours(dominantColours));
 
         // Call now playing when the current song has finished
-        let timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;
-        yield delay(timer);
+        //let timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;
+        yield delay(RETRY_TIMER);
         yield put(getNowPlaying());
 
     } catch (error) {
+        // generate errors from an error helper class
+        //{ "error": { "status": 401, "message": "Invalid access token" } }
+        //{ "error": { "status": 401, "message": "No token provided" } }
+        //{ "error": { "status": 401, "message": "No song playing" } }
         console.log(error.response);
-        yield put({ type: GET_FAILURE, error: error.response });
+        yield put({ type: GET_FAILURE, error: JSON.parse(error.response) });
+        yield delay(RETRY_TIMER);
+        yield put(getNowPlaying());
     }
 }
 

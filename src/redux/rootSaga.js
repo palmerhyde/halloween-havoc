@@ -2,8 +2,9 @@ import { all } from 'redux-saga/effects';
 import {
     watcherMonsterSaga,
     watcherSetMonstersDominantColoursSaga,
-    watcherSetMonsterColourSaga } from './ducks/monsters';
-import { watcherNowPlayingSaga } from './ducks/spotifyNowPlaying';
+    watcherSetMonsterColourSaga,
+     } from './ducks/monsters';
+import { watcherNowPlayingSaga, watcherSetNowPlayingAuthTokenSaga } from './ducks/spotifyNowPlaying';
 
 
 /**
@@ -15,6 +16,7 @@ export default function* rootSaga() {
         watcherMonsterSaga(),
         watcherNowPlayingSaga(),
         watcherSetMonstersDominantColoursSaga(),
-        watcherSetMonsterColourSaga()
+        watcherSetMonsterColourSaga(),
+        watcherSetNowPlayingAuthTokenSaga()
     ]);
 }
