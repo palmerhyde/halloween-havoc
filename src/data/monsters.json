@@ -5,9 +5,9 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 244,
-        "g": 188,
-        "b": 4
+        "r": 42,
+        "g": 159,
+        "b": 212
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
@@ -46,9 +46,9 @@
       "title": "Slimer",
       "dns": "slimer.local",
       "colour": {
-        "r": 162,
-        "g": 196,
-        "b": 224,
+        "r": 167,
+        "g": 224,
+        "b": 162,
         "a": 1
       },
       "artist": "ray parker jr",

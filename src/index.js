@@ -8,15 +8,13 @@ import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
 import rootSaga from './redux/rootSaga';
 import rootReducer from './redux/rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const reduxDevTools =
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
 let store = createStore(
     rootReducer,
-    compose(applyMiddleware(sagaMiddleware), reduxDevTools)
+    composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);

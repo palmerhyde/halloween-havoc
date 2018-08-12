@@ -19,9 +19,6 @@ class monsterCard extends React.PureComponent {
     };
 
     handleChange = (colour) => {
-        // Set colour action
-        // this.setState({ color: color.rgb })
-       // monster.colour = colour
         let payload = {
             colour: colour.rgb,
             monster: this.props.monster
@@ -61,8 +58,6 @@ class monsterCard extends React.PureComponent {
                 }
             }
         });
-
-        document.body.style.backgroundColor = `rgb(${ monster.colour.r }, ${ monster.colour.g }, ${ monster.colour.b })`;
 
         return (
             <div className="card-link">

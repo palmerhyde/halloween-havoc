@@ -70,36 +70,20 @@ function* workerNowPlayingSaga() {
     const RETRY_TIMER = 10000;
 
     try {
-        let accessToken = yield select((state) => state.nowPlaying.authToken);
+        const accessToken = yield select((state) => state.nowPlaying.authToken);
         spotifyApi.setAccessToken(accessToken);
         const nowPlaying = yield call(fetchNowPlaying);
 
-        console.log('now playing' + nowPlaying);
-
         if (!nowPlaying) {
-            let error = {
-                'response': {
-                    'error' : {
-                        'status': 401,
-                        'message': 'No song playing'
-                    }
-                }
-            };
-
-            error.response = JSON.stringify(error.response);
-            throw(error);
+            throw(getNothingPlayingError());
         }
 
-        // TODO: validate response.
         yield put({ type: GET_SUCCESS, nowPlaying });
 
         // TODO: run the next two yields in parallel
-        const dominantColours = yield call(getDominantColours, nowPlaying.item.album.images[0].url);
-        // Set monster colour to dominant colours
+        const albumImageUrl = yield select((state) => state.nowPlaying.nowPlaying.item.album.images[0].url);
+        const dominantColours = yield call(getDominantColours, albumImageUrl);
         yield put(setMonstersDominantColours(dominantColours));
-
-        // Call now playing when the current song has finished
-        //let timer = (nowPlaying.item.duration_ms - nowPlaying.progress_ms) + 1500;
         yield delay(RETRY_TIMER);
         yield put(getNowPlaying());
 
@@ -107,27 +91,30 @@ function* workerNowPlayingSaga() {
         // generate errors from an error helper class
         //{ "error": { "status": 401, "message": "Invalid access token" } }
         //{ "error": { "status": 401, "message": "No token provided" } }
-        //{ "error": { "status": 401, "message": "No song playing" } }
-        console.log(error.response);
+        // what about a time out?
+        console.log(error);
+        if (!error || !error.response || error.response === '') {
+            error = getEmptyResponseError();
+        }
+
         yield put({ type: GET_FAILURE, error: JSON.parse(error.response) });
         yield delay(RETRY_TIMER);
         yield put(getNowPlaying());
     }
 }
 
-// Selectors
-
 // Services
 function fetchNowPlaying() {
-    // ensure we have a token, otherwise throw an error
     return spotifyApi.getMyCurrentPlaybackState();
 }
 
+// Helper utilities
 function getDominantColours(url) {
     // TODO: understand this transformation
+    // unit test
+    // move the call to Vibrant.From to a parent yield so we an unit test the logic.
     return Vibrant.from(url).getPalette()
         .then(response => {
-            console.log(response);
             const keys = Object.keys(response);
             const addPalette = (acc, paletteName) => ({
                 ...acc,
@@ -136,4 +123,35 @@ function getDominantColours(url) {
 
             return keys.reduce(addPalette, {});
         })
+}
+
+function getNothingPlayingError() {
+    //{ "error": { "status": 401, "message": "No song playing" } }
+    // todo: make this a generic error handler
+    // Unit test
+    let error = {
+        'response': {
+            'error' : {
+                'status': 401,
+                'message': 'No song playing'
+            }
+        }
+    };
+
+    error.response = JSON.stringify(error.response);
+}
+
+function getEmptyResponseError() {
+    // todo: make this a generic error handler
+    // Unit test
+    let error = {
+        'response': {
+            'error' : {
+                'status': 401,
+                'message': 'Empty Response'
+            }
+        }
+    };
+
+    error.response = JSON.stringify(error.response);
 }

@@ -31,9 +31,7 @@ class nothingPlaying extends React.PureComponent {
     }
 
     render() {
-        // send user here to get a token
-        // https://developer.spotify.com/console/get-users-currently-playing-track/
-
+        const { authToken, message } = this.props;
         return (
             <div className="card">
                 <div
@@ -45,12 +43,12 @@ class nothingPlaying extends React.PureComponent {
                 >
                 </div>
                 <div className="user-card-body">
-                    {this.getMessage(this.props.message)}
+                    {this.getMessage(message)}
                 </div>
                 <div className="user-card-stats">
                     <div className="stat-container">
                         <div className="stat-value">Token</div>
-                        <input type="text" value={this.props.authToken} onChange={this.handleChange} />
+                        <input type="text" value={authToken} onChange={this.handleChange} />
                     </div>
                 </div>
             </div>
