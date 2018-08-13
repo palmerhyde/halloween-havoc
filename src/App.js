@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { getMonsters, setMonsterColour } from './redux/ducks/monsters';
+import {getMonsters, setMonsterColour, discoverPhysicalMonsters} from './redux/ducks/monsters';
 import { getNowPlaying, setSpotifyAuthToken } from './redux/ducks/spotifyNowPlaying';
 import NowPlaying from './components/nowPlaying';
 import MonsterCard from './components/monsterCard'
@@ -10,9 +10,10 @@ import './App.css';
 class App extends Component {
 
     componentDidMount() {
-        const { onRequestMonsters, onRequestNowPlaying, monsters } = this.props;
+        const { onRequestMonsters, onRequestNowPlaying, onDiscoverMonsters, monsters } = this.props;
         onRequestMonsters();
         onRequestNowPlaying();
+        onDiscoverMonsters();
     }
 
     render() {
@@ -68,7 +69,8 @@ const mapDispatchToProps = dispatch => {
         onRequestMonsters: () => dispatch(getMonsters()),
         onRequestNowPlaying: () => dispatch(getNowPlaying()),
         onSetMonsterColour: (payload) => dispatch(setMonsterColour(payload)),
-        onSetSpotifyAuthToken: (payload) => dispatch(setSpotifyAuthToken(payload))
+        onSetSpotifyAuthToken: (payload) => dispatch(setSpotifyAuthToken(payload)),
+        onDiscoverMonsters: () => dispatch(discoverPhysicalMonsters())
     };
 };
 

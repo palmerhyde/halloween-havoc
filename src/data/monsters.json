@@ -5,26 +5,29 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 218,
-        "g": 36,
-        "b": 39
+        "r": 5,
+        "g": 241,
+        "b": 220,
+        "a": 1
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
-      "avatar": "https://images-na.ssl-images-amazon.com/images/I/71v6kW3BNQL._SX425_.jpg"
+      "avatar": "https://images-na.ssl-images-amazon.com/images/I/71v6kW3BNQL._SX425_.jpg",
+      "discovered": false
     },
     {
       "id": 2,
       "title": "Book of Souls Eddie",
       "dns": "bookofsouls.local",
       "colour": {
-        "r": 218,
-        "g": 36,
-        "b": 39
+        "r": 209,
+        "g": 133,
+        "b": 40
       },
       "artist": "iron maiden",
       "header": "https://i0.wp.com/www.goodmusicmatters.net/wp-content/uploads/2016/04/Book-Of-Souls-Art.jpg",
-      "avatar": "https://cdn.shopify.com/s/files/1/0744/5517/products/iron-maiden-book-souls-mask-2_large.jpg?v=1527556324"
+      "avatar": "https://cdn.shopify.com/s/files/1/0744/5517/products/iron-maiden-book-souls-mask-2_large.jpg?v=1527556324",
+      "discovered": false
     },
     {
       "id": 3,
@@ -38,7 +41,8 @@
       },
       "artist": "ghost",
       "header": "http://assets.blabbermouth.net/media/ghostmeliorapromobwbiggernew_638.jpg",
-      "avatar": "https://images.maskworld.com/is/image/maskworld/bigview/ghost-papa-emeritus-ii-miter-and-mask--mw-132812-1.jpg"
+      "avatar": "https://images.maskworld.com/is/image/maskworld/bigview/ghost-papa-emeritus-ii-miter-and-mask--mw-132812-1.jpg",
+      "discovered": false
     },
     {
       "id": 4,
@@ -52,7 +56,8 @@
       },
       "artist": "ray parker jr",
       "header": "https://resizing.flixster.com/pCeRPEI8u6L8_bTc1RZyZTx3ddg=/2893x1395/v1.bjsyMjgzNzI7ajsxNzc3NzsxMjAwOzI4OTM7MTM5NQ",
-      "avatar": "https://i.pinimg.com/236x/b7/af/32/b7af320da0ea81cab1a6c16b23b6d486.jpg"
+      "avatar": "https://i.pinimg.com/236x/b7/af/32/b7af320da0ea81cab1a6c16b23b6d486.jpg",
+      "discovered": false
     },
     {
       "id": 5,
@@ -66,7 +71,8 @@
       },
       "artist": "Michael Jackson",
       "header": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgiMy6AAHUSD2vRUU5srMdhGLP2Cc3O6Wcv7mnMmqEotb4nTYL",
-      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjH91J5WSx3PJaOJLRax-WmRTCeBB2k5l9w_qoWmHOOX-CRAi6HQ"
+      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjH91J5WSx3PJaOJLRax-WmRTCeBB2k5l9w_qoWmHOOX-CRAi6HQ",
+      "discovered": false
     }
   ]
 }

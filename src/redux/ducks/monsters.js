@@ -1,6 +1,6 @@
-import { select } from "redux-saga/effects";
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, call, put, all, select } from "redux-saga/effects";
 import axios from "axios";
+import { delay } from "redux-saga";
 
 // Actions
 const GET = 'MONSTER_API_GET_REQUEST';
@@ -18,6 +18,10 @@ const SET_MONSTER_COLOUR_FAILURE = 'SET_MONSTER_COLOUR_FAILURE';
 const SET_PHYSICAL_MONSTER_COLOUR = 'SET_PHYSICAL_MONSTER_COLOUR';
 const SET_PHYSICAL_MONSTER_COLOUR_SUCCESS = 'SET_PHYSICAL_MONSTER_COLOUR_SUCCESS';
 const SET_PHYSICAL_MONSTER_COLOUR_FAILURE = 'SET_PHYSICAL_MONSTER_COLOUR_FAILURE';
+
+const DISCOVER_PHYSICAL_MONSTER = 'DISCOVER_PHYSICAL_MONSTER';
+const DISCOVER_PHYSICAL_MONSTER_SUCCESS = 'DISCOVER_PHYSICAL_MONSTER_SUCCESS';
+const DISCOVER_PHYSICAL_MONSTER_FAILURE = 'DISCOVER_PHYSICAL_MONSTER_FAILURE';
 
 // Reducer
 const initialState = [];
@@ -42,7 +46,6 @@ export function getMonsters() {
     };
 }
 
-
 // Action Creators
 export function setMonstersDominantColours(payload) {
     return {
@@ -58,7 +61,11 @@ export function setMonsterColour(payload) {
     };
 }
 
-// Selectors
+export function discoverPhysicalMonsters() {
+    return {
+        type: DISCOVER_PHYSICAL_MONSTER,
+    };
+}
 
 // Sagas
 export function* watcherMonsterSaga() {
@@ -71,6 +78,10 @@ export function* watcherSetMonstersDominantColoursSaga() {
 
 export function* watcherSetMonsterColourSaga() {
     yield takeLatest(SET_MONSTER_COLOUR, workerSetMonsterColourSaga);
+}
+
+export function* watcherDiscoverPhysicalMonsterSaga() {
+    yield takeLatest(DISCOVER_PHYSICAL_MONSTER, workerDiscoverPhysicalMonsterSaga);
 }
 
 function* workerMonsterSaga() {
@@ -107,7 +118,8 @@ function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
         let filteredMonsters = filterMonstersByArtist(monsters.monsters, artist);
 
         yield all(filteredMonsters.map(monster => {
-            return call(putMonsterColor, monster, colour);
+            monster.colour = colour;
+            return call(putMonster, monster);
         }));
 
         yield all(filteredMonsters.map(monster => {
@@ -127,10 +139,9 @@ function* workerSetMonsterColourSaga({ payload: payload }) {
         console.log(payload);
         let colour = payload.colour;
         let monster = payload.monster;
-
-        // Filter monsters where artist in nowPlaying.artists
-        const response = yield call(putMonsterColor, monster, colour);
-        const response2 = yield call(putPhysicalMonsterColor, monster, colour);
+        monster.colour = colour;
+        yield call(putMonster, monster);
+        yield call(putPhysicalMonsterColor, monster, colour);
 
         // Refetch monsters to get fresh state
         yield put(getMonsters());
@@ -138,6 +149,32 @@ function* workerSetMonsterColourSaga({ payload: payload }) {
     } catch (error) {
         yield put({ type: SET_MONSTER_COLOUR_FAILURE, error });
     }
+}
+
+function* workerDiscoverPhysicalMonsterSagaStep2(monster) {
+    try {
+        yield call(discoverPhysicalMonster, monster);
+        monster.discovered = true;
+        yield call(putMonster, monster);
+    } catch (error) {
+        monster.discovered = false;
+        yield call(putMonster, monster);
+    }
+}
+
+function* workerDiscoverPhysicalMonsterSaga() {
+    console.log('discovering monsters');
+    let monsters = yield select((state) => state.monsters.monsters);
+
+    if (monsters) {
+        yield all(monsters.map(monster => {
+            return call(workerDiscoverPhysicalMonsterSagaStep2, monster);
+        }));
+    }
+
+    yield put(getMonsters());
+    yield delay(10000);
+    yield put(discoverPhysicalMonsters());
 }
 
 // Services
@@ -148,8 +185,7 @@ function fetchMonsters() {
     });
 }
 
-function putMonsterColor(monster, colour) {
-    monster.colour = colour;
+function putMonster(monster) {
     return axios({
         method: "put",
         url: "http://localhost:3004/monsters/" + monster.id,
@@ -169,6 +205,13 @@ function putPhysicalMonsterColor(monster, colour) {
         console.log(`${monster.title} not discovered`);
         return;
     }
+}
+
+function discoverPhysicalMonster(monster) {
+    return axios({
+        method: "get",
+        url: `http://${monster.dns}`
+    });
 }
 
 

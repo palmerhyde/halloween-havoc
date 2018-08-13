@@ -139,6 +139,7 @@ void loopBlue() {
 void handleRoot() {
   String message = "hello from ";
   message += DNS;
+  server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(200, "text/plain", message);
 }
 

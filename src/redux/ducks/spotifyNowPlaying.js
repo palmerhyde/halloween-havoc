@@ -92,7 +92,7 @@ function* workerNowPlayingSaga() {
         //{ "error": { "status": 401, "message": "Invalid access token" } }
         //{ "error": { "status": 401, "message": "No token provided" } }
         // what about a time out?
-        console.log(error);
+        //console.log(error);
         if (!error || !error.response || error.response === '') {
             error = getEmptyResponseError();
         }
