@@ -5,9 +5,9 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 42,
-        "g": 159,
-        "b": 212
+        "r": 218,
+        "g": 36,
+        "b": 39
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
@@ -18,10 +18,9 @@
       "title": "Book of Souls Eddie",
       "dns": "bookofsouls.local",
       "colour": {
-        "r": 80,
-        "g": 33,
-        "b": 38,
-        "a": 1
+        "r": 218,
+        "g": 36,
+        "b": 39
       },
       "artist": "iron maiden",
       "header": "https://i0.wp.com/www.goodmusicmatters.net/wp-content/uploads/2016/04/Book-Of-Souls-Art.jpg",

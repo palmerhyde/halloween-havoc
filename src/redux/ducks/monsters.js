@@ -1,5 +1,5 @@
 import { select } from "redux-saga/effects";
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put, all } from "redux-saga/effects";
 import axios from "axios";
 
 // Actions
@@ -86,8 +86,6 @@ function* workerMonsterSaga() {
 
 function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
     try {
-        console.log(colours);
-
         // TODO: not all colors have values,
         // DarkMuted
         // DarkVibrant
@@ -105,16 +103,21 @@ function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
 
         // For each monster
         let monsters = yield select((state) => state.monsters);
-        let filteredMonsters = filterMonstersByArtist(monsters[0], 'iron maiden');
+        let artist = yield select((state) => state.nowPlaying.nowPlaying.item.artists[0].name);
+        let filteredMonsters = filterMonstersByArtist(monsters.monsters, artist);
 
-        // Filter monsters where artist in nowPlaying.artists
-        const response = yield call(putMonsterColor, monsters.monsters[0], colour);
-        const response2 = yield call(putPhysicalMonsterColor, monsters.monsters[0], colour);
+        yield all(filteredMonsters.map(monster => {
+            return call(putMonsterColor, monster, colour);
+        }));
 
-        // Refetch monsters to get fresh state
+        yield all(filteredMonsters.map(monster => {
+            return call(putPhysicalMonsterColor, monster, colour);
+        }));
+
         yield put(getMonsters());
         yield put({ type: SET_MONSTERS_DOMINANT_COLOURS_SUCCESS, monsters });
     } catch (error) {
+        console.log(error);
         yield put({ type: SET_MONSTERS_DOMINANT_COLOURS_FAILURE, error });
     }
 }
@@ -155,16 +158,28 @@ function putMonsterColor(monster, colour) {
 }
 
 function putPhysicalMonsterColor(monster, colour) {
-    return axios({
-        method: "get",
-        url: `http://powerslave.local/setcolour?r=${colour.r}&g=${colour.g}&b=${colour.b}`
-    });
+    // Only make call if monster.auto and monster.discovered
+    // Start with discovered
+    if (monster.discovered) {
+        return axios({
+            method: "get",
+            url: `http://${monster.dns}/setcolour?r=${colour.r}&g=${colour.g}&b=${colour.b}`
+        });
+    } else {
+        console.log(`${monster.title} not discovered`);
+        return;
+    }
 }
 
 
 // Helper Utilities
-function filterMonstersByArtist(monsters, artist) {
-    return monsters;
+export function filterMonstersByArtist(monsters, artist) {
+    // TODO: support multiple artists
+    let monstersArray =  monsters.filter( monster => {
+        return monster.artist.toLowerCase() === artist.toLowerCase();
+    });
+
+    return monstersArray;
 }
 
 function getVibrantColour() {
