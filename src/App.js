@@ -36,11 +36,11 @@ class App extends Component {
 
           <NowPlaying nowPlaying={nowPlaying} onSetSpotifyAuthToken={onSetSpotifyAuthToken}/>
 
-          <h2>Monsters</h2>
+          <h2>Active Monsters</h2>
           <div className='card-container'>
           {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
               monsters.monsters.map((monster, idx) => (
-                  <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`monster-${idx}`}/>
+                  <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`active-monster-${idx}`}/>
               ))
 
           )
@@ -48,6 +48,20 @@ class App extends Component {
                   <div>Loading Monsters...</div>
               )
           }
+          </div>
+
+          <h2>Inactive Monsters</h2>
+          <div className='card-container'>
+              {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
+                      monsters.monsters.map((monster, idx) => (
+                          <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`inactive-monster-${idx}`}/>
+                      ))
+
+                  )
+                  : (
+                      <div>Loading Monsters...</div>
+                  )
+              }
           </div>
 
       </div>

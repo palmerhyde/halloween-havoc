@@ -22,20 +22,20 @@ class nowPlaying extends React.PureComponent {
                     <div className="card">
                         <div
                             className='album-card-header'
-                            style={{backgroundImage: `url(${this.props.nowPlaying.nowPlaying.item.album.images[1].url})`}}
+                            style={{backgroundImage: `url(${this.props.nowPlaying.nowPlaying.data.item.album.images[1].url})`}}
                         />
                         <div className="album-card-body">
-                            <div className="user-card-name">{ this.props.nowPlaying.nowPlaying.item.name }</div>
+                            <div className="user-card-name">{ this.props.nowPlaying.nowPlaying.data.item.name }</div>
                         </div>
                         <div className="user-card-stats">
                             <div className="stat-container">
                                 <div className="stat-value">Album</div>
-                                <div className="stat-name">{ this.props.nowPlaying.nowPlaying.item.album.name }</div>
+                                <div className="stat-name">{ this.props.nowPlaying.nowPlaying.data.item.album.name }</div>
                             </div>
                             <div className="stat-container">
                                 <div className="stat-value">Artists</div>
                                 <div className="stat-name">
-                                    { this.props.nowPlaying.nowPlaying.item.artists.map((artist, idx) => (
+                                    { this.props.nowPlaying.nowPlaying.data.item.artists.map((artist, idx) => (
                                         artist.name + '\n'
                                     )) }
 
@@ -43,7 +43,7 @@ class nowPlaying extends React.PureComponent {
                             </div>
                             <div className="stat-container">
                                 <div className="stat-value">Duration</div>
-                                <div className="stat-name">{ this.props.nowPlaying.nowPlaying.progress_ms } - {this.props.nowPlaying.nowPlaying.item.duration_ms}</div>
+                                <div className="stat-name">{ this.props.nowPlaying.nowPlaying.data.progress_ms } - {this.props.nowPlaying.nowPlaying.data.item.duration_ms}</div>
                             </div>
                         </div>
                     </div>

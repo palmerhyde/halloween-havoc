@@ -46,7 +46,6 @@ export function getMonsters() {
     };
 }
 
-// Action Creators
 export function setMonstersDominantColours(payload) {
     return {
         type: SET_MONSTERS_DOMINANT_COLOURS,
@@ -61,13 +60,14 @@ export function setMonsterColour(payload) {
     };
 }
 
+// Move Physical monsters to separate saga?
 export function discoverPhysicalMonsters() {
     return {
         type: DISCOVER_PHYSICAL_MONSTER,
     };
 }
 
-// Sagas
+// Saga watchers
 export function* watcherMonsterSaga() {
     yield takeLatest(GET, workerMonsterSaga);
 }
@@ -84,6 +84,7 @@ export function* watcherDiscoverPhysicalMonsterSaga() {
     yield takeLatest(DISCOVER_PHYSICAL_MONSTER, workerDiscoverPhysicalMonsterSaga);
 }
 
+// Saga workers
 function* workerMonsterSaga() {
     try {
         const response = yield call(fetchMonsters);
@@ -98,6 +99,7 @@ function* workerMonsterSaga() {
 function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
     try {
         // TODO: not all colors have values,
+        // TODO: this does not belong here.
         // DarkMuted
         // DarkVibrant
         // LightMuted
@@ -173,7 +175,7 @@ function* workerDiscoverPhysicalMonsterSaga() {
     }
 
     yield put(getMonsters());
-    yield delay(10000);
+    yield delay(10000000000000);
     yield put(discoverPhysicalMonsters());
 }
 
@@ -214,9 +216,9 @@ function discoverPhysicalMonster(monster) {
     });
 }
 
-
-// Helper Utilities
 export function filterMonstersByArtist(monsters, artist) {
+    // Helper Utilities
+    // DEMO: Step X - Write a unit test for this function
     // TODO: support multiple artists
     let monstersArray =  monsters.filter( monster => {
         return monster.artist.toLowerCase() === artist.toLowerCase();
@@ -225,6 +227,6 @@ export function filterMonstersByArtist(monsters, artist) {
     return monstersArray;
 }
 
-function getVibrantColour() {
+export function getVibrantColour() {
 
 }
