@@ -1,5 +1,12 @@
 ![alt text](http://images5.fanpop.com/image/photos/28000000/WCW-Halloween-Havoc-1999-Logo-world-championship-wrestling-28038872-178-200.png "Halloween Havoc")
 
+`npm run DB`  to start up the mock data json server. This is required to run the app.
+
+`npm run start` to start the application
+
+browse http://localhost:3000
+
+//TODO: Move all of this Create React App stuff into a separate wiki file and link to it.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

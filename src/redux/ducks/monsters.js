@@ -234,5 +234,5 @@ export function filterMonstersByArtist(monsters, artist) {
 }
 
 export function getVibrantColour() {
-
+    console.log('%');
 }
