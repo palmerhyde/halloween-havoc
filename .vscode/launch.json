@@ -1,23 +1,21 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Debug CRA Tests",
-        "type": "node",
-        "request": "launch",
-        "program": "${workspaceRoot}/node_modules/.bin/jest",      
-        "args": [
-          "--runInBand"
-        ],
-        "cwd": "${workspaceRoot}",
-        "protocol": "inspector",
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
-        "outFiles": ["${workspaceRoot}/build/**/*"],
-        "sourceMaps": true,
-        "windows": {
-          "program": "${workspaceRoot}/node_modules/jest/bin/jest", 
-        }
-      }
-    ]
-  }
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Unit Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",      
+      "args": [
+        "test",
+        "--runInBand",
+        "--no-cache",
+        "--env=jsdom"
+      ],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
