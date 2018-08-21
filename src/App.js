@@ -74,7 +74,8 @@ const mapStateToProps = state => {
         fetching: state.fetching,
         error: state.error,
         nowPlaying : state.nowPlaying,
-        monsters: state.monsters
+        monsters: state.monsters,
+        inactiveMonsters: state.monsters
     };
 };
 

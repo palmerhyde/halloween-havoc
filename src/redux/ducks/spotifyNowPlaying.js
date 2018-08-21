@@ -1,6 +1,7 @@
 import { delay } from 'redux-saga'
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { setMonstersDominantColours } from './monsters'
+import { processMonsterColours } from './monsterColours'
 import * as Vibrant from 'node-vibrant'
 import axios from "axios/index";
 
@@ -61,6 +62,7 @@ export function* watcherSetNowPlayingAuthTokenSaga() {
 
 // Saga Workers
 function* workerNowPlayingSaga() {
+    // Const belongs in config
     const RETRY_TIMER = 100000000;
 
     try {
@@ -73,13 +75,10 @@ function* workerNowPlayingSaga() {
 
         yield put({ type: GET_SUCCESS, nowPlaying });
 
-        // TODO: run the next two yields in parallel (Use yield all)
+        // Is there a race condition here?
         const albumImageUrl = yield select((state) => state.nowPlaying.nowPlaying.data.item.album.images[0].url);
-        const dominantColours = yield call(getDominantColours, albumImageUrl);
-        yield put(setMonstersDominantColours(dominantColours));
-        yield delay(RETRY_TIMER);
-        yield put(getNowPlaying());
-
+        yield put(processMonsterColours(albumImageUrl));
+        //yield put(setMonstersDominantColours(dominantColours));
     } catch (error) {
         // Why no error? - error is undefined in debugger but isn't really undefined.
         // This is either a web storm error or a symbol error
@@ -89,14 +88,14 @@ function* workerNowPlayingSaga() {
         }
 
         yield put({ type: GET_FAILURE, error: getResponseError(error.response.data.error.message)});
-
-        // TODO: don't retry i
+    } finally {
         yield delay(RETRY_TIMER);
         yield put(getNowPlaying());
     }
 }
 
 // Services
+// TODO: belongs within spotify service
 export function fetchNowPlaying(token) {
     if (!token) {
         token = '';
@@ -111,23 +110,6 @@ export function fetchNowPlaying(token) {
             'Authorization': `Bearer ${token}`
         }
     })
-}
-
-// Helper utilities
-function getDominantColours(url) {
-    // TODO: understand this transformation
-    // unit test
-    // move the call to Vibrant.From to a parent yield so we an unit test the logic.
-    return Vibrant.from(url).getPalette()
-        .then(response => {
-            const keys = Object.keys(response);
-            const addPalette = (acc, paletteName) => ({
-                ...acc,
-                [paletteName]: response[paletteName] && response[paletteName].getRgb()
-            });
-
-            return keys.reduce(addPalette, {});
-        })
 }
 
 function getNothingPlayingError() {

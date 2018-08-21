@@ -96,10 +96,15 @@ function* workerMonsterSaga() {
     }
 }
 
-function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
+function* workerSetMonstersDominantColoursSaga() {
     try {
+        // We should get the colours from state as it is the source of truth
+        const colours = yield select((state) => state.monsterColours.colours);
+        const currentIndex = yield select((state) => state.monsterColours.currentIndex);
+
         // TODO: not all colors have values,
         // TODO: this does not belong here.
+        // TODO: calculated colours should be passed in or already in state.
         // DarkMuted
         // DarkVibrant
         // LightMuted
@@ -116,9 +121,10 @@ function* workerSetMonstersDominantColoursSaga({ payload: colours }) {
 
         // For each monster
         let monsters = yield select((state) => state.monsters);
-        let artist = yield select((state) => state.nowPlaying.nowPlaying.item.artists[0].name);
+        let artist = yield select((state) => state.nowPlaying.nowPlaying.data.item.artists[0].name);
         let filteredMonsters = filterMonstersByArtist(monsters.monsters, artist);
 
+        // TODO: add discoved and auto monsters to the filter
         yield all(filteredMonsters.map(monster => {
             monster.colour = colour;
             return call(putMonster, monster);
@@ -175,7 +181,8 @@ function* workerDiscoverPhysicalMonsterSaga() {
     }
 
     yield put(getMonsters());
-    yield delay(10000000000000);
+    // TODO: move delay into a const
+    yield delay(10000);
     yield put(discoverPhysicalMonsters());
 }
 
@@ -217,7 +224,6 @@ function discoverPhysicalMonster(monster) {
 }
 
 export function filterMonstersByArtist(monsters, artist) {
-    // Helper Utilities
     // DEMO: Step X - Write a unit test for this function
     // TODO: support multiple artists
     let monstersArray =  monsters.filter( monster => {

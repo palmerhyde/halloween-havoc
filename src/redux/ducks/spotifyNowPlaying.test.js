@@ -1,7 +1,6 @@
-import * as Vibrant from 'node-vibrant'
 import axios from "axios/index";
 
-describe('Spotify Service', () => {
+describe('Integration: Spotify Service', () => {
 
     it('returns no token error', () => {
         expect.assertions(1);
@@ -71,19 +70,5 @@ describe('Spotify Service', () => {
             .then(response => {
                 expect(response.data.item).not.toBeUndefined();
             });
-    });
-});
-
-describe('Dominant Colours Service', () => {
-
-    it('Gets the dominant colours from an image url', () => {
-        expect.assertions(1);
-
-        // DEMO: Step X - Replace image with Audience Image below
-        // DEMO: Place link to github repo for ndde-vibrant here.
-        return Vibrant.from('https://i.scdn.co/image/59ca77d06b806858e0591523e638a998b953a8ea').getPalette()
-            .then(response => {
-                expect(response.Vibrant).not.toBeUndefined();
-            })
     });
 });

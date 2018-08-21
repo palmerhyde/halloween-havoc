@@ -3,9 +3,10 @@ import {
     watcherMonsterSaga,
     watcherSetMonstersDominantColoursSaga,
     watcherSetMonsterColourSaga,
-    watcherDiscoverPhysicalMonsterSaga
+    watcherDiscoverPhysicalMonsterSaga,
      } from './ducks/monsters';
 import { watcherNowPlayingSaga, watcherSetNowPlayingAuthTokenSaga } from './ducks/spotifyNowPlaying';
+import { watcherProcessMonsterColours } from './ducks/monsterColours';
 
 
 /**
@@ -19,6 +20,7 @@ export default function* rootSaga() {
         watcherSetMonstersDominantColoursSaga(),
         watcherSetMonsterColourSaga(),
         watcherSetNowPlayingAuthTokenSaga(),
-        watcherDiscoverPhysicalMonsterSaga()
+        watcherDiscoverPhysicalMonsterSaga(),
+        watcherProcessMonsterColours()
     ]);
 }
