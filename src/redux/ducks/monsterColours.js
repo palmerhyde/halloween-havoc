@@ -1,7 +1,6 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
-import { setMonstersDominantColours } from './monsters'
-import * as Vibrant from 'node-vibrant'
-import axios from "axios/index";
+import { setMonstersDominantColours } from './monsters';
+import * as Vibrant from 'node-vibrant';
 
 // Actions
 const PROCESS = 'MONSTER_COLOURS_PROCESS';
@@ -30,12 +29,12 @@ export default function monsterColoursReducer(state = initialState, action) {
 }
 
 // Action Creators
-export function processMonsterColours(url) {
+export const processMonsterColours = (url) => {
     return {
         type: PROCESS,
         url: url
     };
-}
+};
 
 // Saga Watchers
 export function* watcherProcessMonsterColours() {
@@ -57,7 +56,7 @@ function* workerProcessMonsterColours({url: url}) {
 }
 
 // Helper utilities
-export function getDominantColours(url) {
+export const getDominantColours = (url) => {
     return Vibrant.from(url).getPalette()
         .then(response => {
             const keys = Object.keys(response);
@@ -68,11 +67,11 @@ export function getDominantColours(url) {
 
             return keys.reduce(addPalette, {});
         })
-}
+};
 
-export function calculateCurrentIndex(currentIndex, colours) {
+export const calculateCurrentIndex = (currentIndex, colours) => {
     const colourCount = colours.length;
     console.log('colour count:' + colourCount);
     console.log('colours:' + colours);
     return currentIndex +1;
-}
+};
