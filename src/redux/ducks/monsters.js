@@ -170,7 +170,7 @@ function* workerDiscoverPhysicalMonsterSaga() {
 
     yield put(getMonsters());
     // TODO: move delay into a const
-    yield delay(10000);
+    yield delay(100000000000); // TODO: do not commit this code!!!!!
     yield put(discoverPhysicalMonsters());
 }
 
