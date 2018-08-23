@@ -10,6 +10,9 @@ const int GREEN_LED_OUTPUT = 4;
 const int BLUE_LED_OUTPUT = 0;
 const char* ssid = "SlimerLuvMomiz";
 const char* PASSWORD = "5111151111";
+//const char* ssid = "GiveMeYourCreditCardNumber";
+//const char* PASSWORD = "Ancestry";
+
 const char* DNS = "powerslave";
 
 ESP8266WebServer server(80);
@@ -156,9 +159,6 @@ void handleSetColour() {
   message += blue; 
   message += "}";
 
-  server.sendHeader("access-control-allow-credentials", "false");
-  server.sendHeader("access-control-allow-headers", "x-requested-with");
-  server.sendHeader("access-control-allow-methods", "GET,OPTIONS");
   server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(204);
 }

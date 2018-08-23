@@ -18,7 +18,10 @@ class nowPlaying extends React.PureComponent {
 
                 <div className='card-container'>
                     <div className="card-link">
-                { this.props.nowPlaying && this.props.nowPlaying.nowPlaying ? (
+                { this.props.nowPlaying &&
+                    this.props.nowPlaying.nowPlaying &&
+                    this.props.nowPlaying.nowPlaying.data &&
+                    this.props.nowPlaying.nowPlaying.data.item ? (
                     <div className="card">
                         <div
                             className='album-card-header'

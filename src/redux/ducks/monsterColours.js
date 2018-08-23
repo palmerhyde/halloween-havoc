@@ -20,9 +20,9 @@ export default function monsterColoursReducer(state = initialState, action) {
         case PROCESS:
             return { ...state, processing: true, error: null };
         case PROCESS_SUCCESS:
-            return { ...state, processing: false, colours: action.colours, currentIndex: action.currentIndex };
+            return { ...state, processing: false, colours: action.colours, currentIndex: action.currentIndex, url: action.url };
         case PROCESS_FAILURE:
-            return { ...state, processing: false, colours: null, error: action.error };
+            return { ...state, processing: false, colours: null, error: action.error, url: null };
         default:
             return state;
     }
@@ -44,11 +44,13 @@ export function* watcherProcessMonsterColours() {
 // Saga Workers
 function* workerProcessMonsterColours({url: url}) {
     try {
-        console.log('album url:' +url);
-        const colours = [];
-        const dominantColours = yield call(getDominantColours, url);
-        let currentIndex = yield select((state) => state.monsterColours.currentIndex);
-        yield put({ type: PROCESS_SUCCESS, colours: dominantColours, currentIndex: calculateCurrentIndex(currentIndex, dominantColours) });
+        const monsterState = yield select((state) => state.monsterColours);
+
+        const dominantColours = (url == monsterState.url
+            ? monsterState.colours
+            : yield call(getDominantColours, url));
+
+        yield put({ type: PROCESS_SUCCESS, colours: dominantColours, currentIndex: calculateCurrentIndex(monsterState.currentIndex, dominantColours), url: url });
         yield put(setMonstersDominantColours());
     } catch (error) {
         yield put({ type: PROCESS_FAILURE, error: 'something went wrong processing monster colours'});
@@ -59,13 +61,16 @@ function* workerProcessMonsterColours({url: url}) {
 export const getDominantColours = (url) => {
     return Vibrant.from(url).getPalette()
         .then(response => {
-            const keys = Object.keys(response);
-            const addPalette = (acc, paletteName) => ({
-                ...acc,
-                [paletteName]: response[paletteName] && response[paletteName].getRgb()
+            return Object.values(response)
+                .filter( value => {
+                return value !== null;
+                    }).map (value =>  {
+                        return {
+                            r: Math.ceil(value._rgb[0]),
+                            g: Math.ceil(value._rgb[1]),
+                            b: Math.ceil(value._rgb[2])
+                        }
             });
-
-            return keys.reduce(addPalette, {});
         })
 };
 
@@ -73,5 +78,5 @@ export const calculateCurrentIndex = (currentIndex, colours) => {
     const colourCount = colours.length;
     console.log('colour count:' + colourCount);
     console.log('colours:' + colours);
-    return currentIndex +1;
+    return (currentIndex < colours.length-1 ? currentIndex +1 : 0);
 };
