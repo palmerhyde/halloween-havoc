@@ -5,11 +5,12 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 205,
-        "g": 131,
-        "b": 48
+        "r": 157,
+        "g": 109,
+        "b": 109,
+        "a": 1
       },
-      "artist": "iron maiden",
+      "artist": "ryan adams",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
       "avatar": "https://images-na.ssl-images-amazon.com/images/I/71v6kW3BNQL._SX425_.jpg",
       "discovered": false
@@ -33,9 +34,9 @@
       "title": "Papa Emeritus II",
       "dns": "ghost.local",
       "colour": {
-        "r": 39,
-        "g": 39,
-        "b": 41,
+        "r": 9,
+        "g": 9,
+        "b": 27,
         "a": 1
       },
       "artist": "ghost",
@@ -48,9 +49,9 @@
       "title": "Slimer",
       "dns": "slimer.local",
       "colour": {
-        "r": 167,
-        "g": 224,
-        "b": 162,
+        "r": 108,
+        "g": 189,
+        "b": 100,
         "a": 1
       },
       "artist": "ray parker jr",
