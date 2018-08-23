@@ -98,25 +98,13 @@ function* workerMonsterSaga() {
 
 function* workerSetMonstersDominantColoursSaga() {
     try {
-        // We should get the colours from state as it is the source of truth
         const colours = yield select((state) => state.monsterColours.colours);
         const currentIndex = yield select((state) => state.monsterColours.currentIndex);
 
-        // TODO: not all colors have values,
-        // TODO: this does not belong here.
-        // TODO: calculated colours should be passed in or already in state.
-        // DarkMuted
-        // DarkVibrant
-        // LightMuted
-        // LightVibrant
-        // Muted
-        // Vibrant
-        // Default
-
         let colour = {
-            'r': colours.Vibrant[0],
-            'g': colours.Vibrant[1],
-            'b': colours.Vibrant[2]
+            'r': colours[currentIndex].r,
+            'g': colours[currentIndex].g,
+            'b': colours[currentIndex].b
         };
 
         // For each monster
@@ -223,16 +211,13 @@ function discoverPhysicalMonster(monster) {
     });
 }
 
-export function filterMonstersByArtist(monsters, artist) {
+export const filterMonstersByArtist = (monsters, artist) => {
     // DEMO: Step X - Write a unit test for this function
     // TODO: support multiple artists
+    console.log('getting here');
     let monstersArray =  monsters.filter( monster => {
         return monster.artist.toLowerCase() === artist.toLowerCase();
     });
 
     return monstersArray;
-}
-
-export function getVibrantColour() {
-    console.log('%');
-}
+};
