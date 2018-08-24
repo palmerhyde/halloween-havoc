@@ -8,10 +8,8 @@ const int ANALOG_INPUT_1 = A0;
 const int RED_LED_OUTPUT = 5;
 const int GREEN_LED_OUTPUT = 4;
 const int BLUE_LED_OUTPUT = 0;
-const char* ssid = "SlimerLuvMomiz";
-const char* PASSWORD = "5111151111";
-//const char* ssid = "GiveMeYourCreditCardNumber";
-//const char* PASSWORD = "Ancestry";
+const char* ssid = "";
+const char* PASSWORD = "";
 
 const char* DNS = "powerslave";
 
