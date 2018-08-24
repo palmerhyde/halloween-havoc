@@ -10,20 +10,30 @@ void setup() {
 }
 
 void loop() {
-  red();
+  //red();
+  //redBlink();
   //rgb();
   //loopRed();
   //loopGreen();
   //loopBlue();
-  //setColour(x, x, x);
+  //setColour(255, 20, 147);
 }
 
 void red() {
+  // 10 Bit -> 8 Bit
   analogWriteRange(255);
+  
+  // Reverse HIGH / LOW
   analogWrite(RED_LED_OUTPUT, 255 - 255);
-  delay(DELAY)
-  analogWrite(RED_LED_OUTPUT, 255 - 0);
-  delay(DELAY)
+  analogWrite(GREEN_LED_OUTPUT, 255 - 0);
+  analogWrite(BLUE_LED_OUTPUT, 255 - 0);
+}
+
+void redBlink() {
+  setColour(255, 0, 0);
+  delay(DELAY);
+  setColour(0, 0, 0);
+  delay(DELAY);
 }
 
 void setColour(unsigned int r, unsigned int g, unsigned int b) {
@@ -36,19 +46,17 @@ void setColour(unsigned int r, unsigned int g, unsigned int b) {
 }
 
 void rgb() {
-  analogWriteRange(255);
-
   //RED
   setColour(255, 0, 0);
-  delay(DELAY)
+  delay(DELAY);
 
   //GREEN
   setColour(0, 255, 0);
-  delay(DELAY)
+  delay(DELAY);
 
   //BLUE
   setColour(0, 0, 255);
-  delay(DELAY)
+  delay(DELAY);
 }
 
 void loopRed() {
