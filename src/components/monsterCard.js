@@ -97,8 +97,8 @@ class monsterCard extends React.PureComponent {
                             </div>
                         </div>
                         <div className="stat-container">
-                            <div className="stat-value">Active</div>
-                            <div className="stat-name">{monster.discovered.toString()}</div>
+                            <div className="stat-value">Mode</div>
+                            <div className="stat-name">{monster.mode}</div>
                         </div>
                     </div>
                 </div>

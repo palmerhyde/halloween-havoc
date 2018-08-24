@@ -10,7 +10,8 @@ void setup() {
 }
 
 void loop() {
-  //red();
+  red();
+  
   //redBlink();
   //rgb();
   //loopRed();
