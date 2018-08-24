@@ -159,6 +159,7 @@ function* workerDiscoverPhysicalMonsterSagaStep2(monster) {
 
 function* workerDiscoverPhysicalMonsterSaga() {
     console.log('discovering monsters');
+    const DISCOVER_THRESHOLD = 10000000;
     let monsters = yield select((state) => state.monsters.monsters);
 
     if (monsters) {
@@ -168,8 +169,7 @@ function* workerDiscoverPhysicalMonsterSaga() {
     }
 
     yield put(getMonsters());
-    // TODO: move delay into a const
-    yield delay(1000000000);
+    yield delay(DISCOVER_THRESHOLD);
     yield put(discoverPhysicalMonsters());
 }
 

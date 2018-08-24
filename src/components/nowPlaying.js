@@ -16,7 +16,7 @@ class nowPlaying extends React.PureComponent {
                     (<h2>Now Playing</h2>)
                 }
 
-                <div className='card-container'>
+                <div className='card-container nowPlaying'>
                     <div className="card-link">
                 { this.props.nowPlaying &&
                     this.props.nowPlaying.nowPlaying &&
@@ -50,7 +50,7 @@ class nowPlaying extends React.PureComponent {
                             </div>
                         </div>
                     </div>
-                ) : (<div className="card-link">
+                ) : (<div className="card-link tokenRequest">
                     { this.props.nowPlaying && this.props.nowPlaying.error && this.props.nowPlaying.error.error ? (
                         <NothingPlaying message={this.props.nowPlaying.error.error.message} authToken={this.props.nowPlaying.authToken} onSetSpotifyAuthToken={this.props.onSetSpotifyAuthToken}/>
                     ) : (null)}
