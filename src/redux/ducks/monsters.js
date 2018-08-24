@@ -107,12 +107,11 @@ function* workerSetMonstersDominantColoursSaga() {
             'b': colours[currentIndex].b
         };
 
-        // For each monster
         let monsters = yield select((state) => state.monsters);
         let artist = yield select((state) => state.nowPlaying.nowPlaying.data.item.artists[0].name);
-        let filteredMonsters = filterMonstersByArtist(monsters.monsters, artist);
+        let filteredMonsters = filterMonsters(monsters.monsters, artist);
 
-        // TODO: add discoved and auto monsters to the filter
+        // TODO: add discovered and auto monsters to the filter
         yield all(filteredMonsters.map(monster => {
             monster.colour = colour;
             return call(putMonster, monster);
@@ -170,7 +169,7 @@ function* workerDiscoverPhysicalMonsterSaga() {
 
     yield put(getMonsters());
     // TODO: move delay into a const
-    yield delay(10000);
+    yield delay(1000000000);
     yield put(discoverPhysicalMonsters());
 }
 
@@ -211,12 +210,14 @@ function discoverPhysicalMonster(monster) {
     });
 }
 
-export const filterMonstersByArtist = (monsters, artist) => {
-    // DEMO: Step X - Write a unit test for this function
+export const filterMonsters = (monsters, artist) => {
+    // DEMO: Step X - Debug unit test in this function
     // TODO: support multiple artists
-    console.log('getting here');
     let monstersArray =  monsters.filter( monster => {
-        return monster.artist.toLowerCase() === artist.toLowerCase();
+        return (monster.artist.toLowerCase() === artist.toLowerCase()
+            && monster.discovered === true
+            && monster.mode === 'AUTO'
+        );
     });
 
     return monstersArray;

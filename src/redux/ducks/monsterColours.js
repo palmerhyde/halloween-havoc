@@ -75,8 +75,5 @@ export const getDominantColours = (url) => {
 };
 
 export const calculateCurrentIndex = (currentIndex, colours) => {
-    const colourCount = colours.length;
-    console.log('colour count:' + colourCount);
-    console.log('colours:' + colours);
     return (currentIndex < colours.length-1 ? currentIndex +1 : 0);
 };
