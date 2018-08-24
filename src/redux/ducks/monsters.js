@@ -39,6 +39,27 @@ export default function monstersReducer(state = initialState, action) {
     }
 }
 
+// selectors
+export function getActiveMonsters(state) {
+    if (!state.monsters || !state.monsters.monsters) {
+        return [];
+    }
+
+    return state.monsters.monsters.filter((item) => {
+        return item.discovered
+    });
+}
+
+export function getInactiveMonsters(state) {
+if (!state.monsters || !state.monsters.monsters) {
+        return [];
+    }
+
+    return state.monsters.monsters.filter((item) => {
+        return !item.discovered
+    });
+}
+
 // Action Creators
 export function getMonsters() {
     return {

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import {getMonsters, setMonsterColour, discoverPhysicalMonsters} from './redux/ducks/monsters';
+import {
+    getMonsters,
+    setMonsterColour,
+    discoverPhysicalMonsters,
+    getInactiveMonsters,
+    getActiveMonsters
+} from './redux/ducks/monsters';
 import { getNowPlaying, setSpotifyAuthToken } from './redux/ducks/spotifyNowPlaying';
 import NowPlaying from './components/nowPlaying';
 import MonsterCard from './components/monsterCard'
@@ -18,7 +24,14 @@ class App extends Component {
     }
 
     render() {
-        const { fetching, nowPlaying, error, monsters, onSetMonsterColour, onSetSpotifyAuthToken } = this.props;
+        const {
+            fetching,
+            nowPlaying,
+            error,
+            activeMonsters,
+            inactiveMonsters,
+            onSetMonsterColour,
+            onSetSpotifyAuthToken } = this.props;
 
     return (
       <div className="App">
@@ -39,22 +52,22 @@ class App extends Component {
 
           <h2>Active Monsters</h2>
           <div className='card-container'>
-          {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
-              monsters.monsters.map((monster, idx) => (
+          { activeMonsters ? (
+              activeMonsters.map((monster, idx) => (
                   <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`active-monster-${idx}`}/>
               ))
 
           )
               : (
-                  <div>Loading Monsters...</div>
+                  <div>Discovering Monsters...</div>
               )
           }
           </div>
 
           <h2>Inactive Monsters</h2>
           <div className='card-container'>
-              {monsters && monsters.monsters &&  monsters.monsters.length > 0 ? (
-                      monsters.monsters.map((monster, idx) => (
+              {inactiveMonsters ? (
+                      inactiveMonsters.map((monster, idx) => (
                           <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`inactive-monster-${idx}`}/>
                       ))
 
@@ -75,8 +88,8 @@ const mapStateToProps = state => {
         fetching: state.fetching,
         error: state.error,
         nowPlaying : state.nowPlaying,
-        monsters: state.monsters,
-        inactiveMonsters: state.monsters
+        activeMonsters: getActiveMonsters(state),
+        inactiveMonsters: getInactiveMonsters(state)
     };
 };
 
