@@ -56,7 +56,7 @@ describe('Integration: Spotify Service', () => {
         expect.assertions(1);
 
         // DEMO: Step X - Replace token with spotify access token here
-        const token = 'BQBxZFg5YQ8HU5gt5Y7jK1sEMpHkpg20C7r0K3sd28ZMHh8gdQy1EfxwOTkmPgKfUF1GBEwQ5wTiNcl6uG6mvMRJZ7QmuW650b2-I6Hbn7Utawsh_ILxlkraXwmmaaxLj-EBXIsg-B-vLzX9aGTFOkc';
+        const token = 'BQD7xpiHFMkqwpJBvzfE_XKP-6L5E6xRjxf3PiQZrg_rIjotaT3WBZqkg8sy3DgVSDUlPkcbXyGQmr8UOGtRThw2SepxjMV4tXYlH3sJoVMALACAwvVDIuxVqCNLz2IG9WquH0pOB9lSLtNW3-MedOjEIg';
 
         return axios({
             method: "get",

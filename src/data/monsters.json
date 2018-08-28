@@ -5,14 +5,14 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
-        "r": 92,
-        "g": 116,
-        "b": 156
+        "r": 103,
+        "g": 87,
+        "b": 28
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
       "avatar": "https://images-na.ssl-images-amazon.com/images/I/71v6kW3BNQL._SX425_.jpg",
-      "discovered": true,
+      "discovered": false,
       "mode": "AUTO"
     },
     {
@@ -35,10 +35,9 @@
       "title": "Papa Emeritus II",
       "dns": "ghost.local",
       "colour": {
-        "r": 9,
-        "g": 9,
-        "b": 27,
-        "a": 1
+        "r": 186,
+        "g": 192,
+        "b": 177
       },
       "artist": "ghost",
       "header": "http://assets.blabbermouth.net/media/ghostmeliorapromobwbiggernew_638.jpg",
@@ -76,7 +75,23 @@
       "header": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgiMy6AAHUSD2vRUU5srMdhGLP2Cc3O6Wcv7mnMmqEotb4nTYL",
       "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjH91J5WSx3PJaOJLRax-WmRTCeBB2k5l9w_qoWmHOOX-CRAi6HQ",
       "discovered": false,
-      "mode": "AUTO"
+      "mode": "MANUAL"
+    },
+    {
+      "id": 6,
+      "title": "Audrey",
+      "dns": "audrey.local",
+      "colour": {
+        "r": 6,
+        "g": 125,
+        "b": 23,
+        "a": 1
+      },
+      "artist": "Taylor Swift",
+      "header": "https://i.ytimg.com/vi/WFx7kfHnKg8/maxresdefault.jpg",
+      "avatar": "https://imgs.michaels.com/MAM/assets/1/726D45CA1C364650A39CD1B336F03305/img/4F2B96F306314FF0BDB3AA9A03B613B2/10554062_1.jpg?fit=inside|220:220",
+      "discovered": false,
+      "mode": "MANUAL"
     }
   ]
 }

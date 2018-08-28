@@ -10,22 +10,22 @@ void setup() {
 }
 
 void loop() {
-  red();
+  //red();
   
   //redBlink();
   //rgb();
   //loopRed();
   //loopGreen();
   //loopBlue();
-  //setColour(255, 20, 147);
+  setColour(255, 20, 147);
 }
 
 void red() {
-  // 10 Bit -> 8 Bit
+  // 10 Bit -> 8 Bit (Failure point)
   analogWriteRange(255);
   
   // Reverse HIGH / LOW
-  analogWrite(RED_LED_OUTPUT, 255 - 255);
+  analogWrite(RED_LED_OUTPUT, 255 - 255); // Failure point - Common Anode +
   analogWrite(GREEN_LED_OUTPUT, 255 - 0);
   analogWrite(BLUE_LED_OUTPUT, 255 - 0);
 }

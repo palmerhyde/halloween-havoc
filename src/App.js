@@ -10,14 +10,15 @@ import {
 import { getNowPlaying, setSpotifyAuthToken } from './redux/ducks/spotifyNowPlaying';
 import NowPlaying from './components/nowPlaying';
 import MonsterCard from './components/monsterCard'
-// import logo from './logo.svg';
 import logo from './halloween-havoc.png';
 import './App.css';
 
 class App extends Component {
 
     componentDidMount() {
-        const { onRequestMonsters, onRequestNowPlaying, onDiscoverMonsters, monsters } = this.props;
+        const { onRequestMonsters,
+            onRequestNowPlaying,
+            onDiscoverMonsters } = this.props;
         onRequestMonsters();
         onRequestNowPlaying();
         onDiscoverMonsters();
@@ -37,7 +38,6 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="Halloween Havoc" />
-          {/* <h1 className="App-title">Welcome to Halloween Havoc</h1> */}
         </header>
 
           {fetching ? (

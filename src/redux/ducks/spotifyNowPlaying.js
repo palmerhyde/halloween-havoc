@@ -63,7 +63,7 @@ export function* watcherSetNowPlayingAuthTokenSaga() {
 // Saga Workers
 function* workerNowPlayingSaga() {
     // Const belongs in config
-    const RETRY_TIMER = 1000000000;
+    const RETRY_TIMER = 10000;
 
     try {
         const accessToken = yield select((state) => state.nowPlaying.authToken);
