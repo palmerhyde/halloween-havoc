@@ -50,34 +50,36 @@ class App extends Component {
 
           <NowPlaying nowPlaying={nowPlaying} onSetSpotifyAuthToken={onSetSpotifyAuthToken}/>
 
-          <h2>Active Monsters</h2>
-          <div className='card-container'>
-          { activeMonsters ? (
-              activeMonsters.map((monster, idx) => (
-                  <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`active-monster-${idx}`}/>
-              ))
+          <section id="activeMonsters">
+            <h2>Active Monsters</h2>
+            <div className='card-container'>
+            { activeMonsters ? (
+                activeMonsters.map((monster, idx) => (
+                    <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`active-monster-${idx}`}/>
+                ))
 
-          )
-              : (
-                  <div>Discovering Monsters...</div>
-              )
-          }
-          </div>
+            )
+                : (
+                    <div>Discovering Monsters...</div>
+                )
+            }
+            </div>
+          </section>
+          <section id="inactiveMonsters">
+            <h2>Inactive Monsters</h2>
+            <div className='card-container'>
+                {inactiveMonsters ? (
+                        inactiveMonsters.map((monster, idx) => (
+                            <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`inactive-monster-${idx}`}/>
+                        ))
 
-          <h2>Inactive Monsters</h2>
-          <div className='card-container'>
-              {inactiveMonsters ? (
-                      inactiveMonsters.map((monster, idx) => (
-                          <MonsterCard monster={monster} onSetMonsterColour={onSetMonsterColour} key={`inactive-monster-${idx}`}/>
-                      ))
-
-                  )
-                  : (
-                      <div>Loading Monsters...</div>
-                  )
-              }
-          </div>
-
+                    )
+                    : (
+                        <div>Loading Monsters...</div>
+                    )
+                }
+            </div>
+          </section>
       </div>
     );
   }

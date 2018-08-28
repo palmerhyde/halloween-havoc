@@ -5,9 +5,15 @@
       "title": "Powerslave Eddie",
       "dns": "powerslave.local",
       "colour": {
+<<<<<<< HEAD
         "r": 103,
         "g": 87,
         "b": 28
+=======
+        "r": 213,
+        "g": 44,
+        "b": 47
+>>>>>>> 5b65b81e6d8b1a8843f6478d8866a726090244c8
       },
       "artist": "iron maiden",
       "header": "https://i.ytimg.com/vi/Tn6ifBAMaPg/maxresdefault.jpg",
