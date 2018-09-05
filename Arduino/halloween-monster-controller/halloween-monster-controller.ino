@@ -8,10 +8,10 @@ const int ANALOG_INPUT_1 = A0;
 const int RED_LED_OUTPUT = 5;
 const int GREEN_LED_OUTPUT = 4;
 const int BLUE_LED_OUTPUT = 0;
-const char* ssid = "SlimerLuvMomiz";
-const char* PASSWORD = "5111151111";
+const char* ssid = "";
+const char* PASSWORD = "";
 
-const char* DNS = "ghost";
+const char* DNS = "powerslave";
 
 ESP8266WebServer server(80);
 
@@ -66,7 +66,7 @@ void listenToMic() {
   }
 
   delay(DELAY);                      
-  Serial.println(volume);
+  //Serial.println(volume);
 }
 
 void startWifi() {
@@ -75,6 +75,7 @@ void startWifi() {
     // Wait for connection
   Serial.print("Attempting to connect to ");
   Serial.println(ssid);
+  Serial.println(WiFi.status());
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);

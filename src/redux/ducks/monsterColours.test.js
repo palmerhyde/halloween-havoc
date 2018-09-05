@@ -19,7 +19,7 @@ describe('Integration: Dominant Colours Service', () => {
 
     it('Gets the dominant colours from an image url', () => {
         expect.assertions(4);
-        return getDominantColours('https://i.scdn.co/image/59ca77d06b806858e0591523e638a998b953a8ea')
+        return getDominantColours('https://cdn4.vectorstock.com/i/1000x1000/44/03/kings-crown-vector-234403.jpg')
             .then(colours => {
                 expect(colours).not.toBeUndefined();
                 expect(colours[0]).toEqual({r: 53, g: 168, b: 203});

@@ -9,7 +9,7 @@ class nowPlaying extends React.PureComponent {
 
     render() {
         return (
-            <div>
+            <div id="playingNow">
 
                 { this.props.nowPlaying && this.props.nowPlaying.fetching ?
                     (<Fetching/>) :
