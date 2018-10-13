@@ -2,26 +2,46 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <Servo.h>
 
+// Serial set up for debug
 const int BAUD_RATE = 115200;
-const int ANALOG_INPUT_1 = A0;
-const int RED_LED_OUTPUT = 5;
-const int GREEN_LED_OUTPUT = 4;
-const int BLUE_LED_OUTPUT = 0;
-const char* ssid = "";
-const char* PASSWORD = "";
 
+// Analog input for mic
+const int ANALOG_INPUT_1 = A0; //ADC0
+
+// RGB LED Pins
+const int RED_LED_OUTPUT = 5; // D1
+const int GREEN_LED_OUTPUT = 4; // D2
+const int BLUE_LED_OUTPUT = 0; // D3
+
+// Servo for Pan
+Servo panServo;
+const int PAN_OUTPUT_PIN = 14; // D5
+
+// Wifi
+// TODO: Automate setting these
+const char* ssid = "SlimerLuvMomiz";
+const char* PASSWORD = "5111151111";
+
+// TODO: get from config
 const char* DNS = "powerslave";
 
 ESP8266WebServer server(80);
 
-int VOLUME_THRESHOLD = 511;
+int VOLUME_THRESHOLD = 800;
 int DELAY = 30;
 int red = 0;
 int green = 0;
 int blue = 0;
+const int PAN_SPEED = 30;
+const int PAN_START_ANGLE = 80;
+const int PAN_END_ANGLE= 160;
+const int PAN_CENTER_ANGLE = 120;
+bool PAN = true;
 
-unsigned long prevMillis = millis();
+unsigned long previousMicMillis = millis();
+unsigned long previousPanMillis = millis();
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -33,7 +53,7 @@ void setup() {
   setColour(0, 0, 0);
   red = 128;
   green = 128;
-  blue = 0;
+  blue = 128;
   setColour(red, green, blue);
   startWifi();
   startHttpServer();
@@ -46,8 +66,15 @@ void loop() {
     Serial.println(WiFi.status());
    }
 
-   if (millis() > prevMillis + 32) {
+   unsigned long currentMillis = millis();
+
+   if (currentMillis > previousMicMillis + 70) {
+    previousMicMillis = currentMillis; 
     listenToMic();
+   }
+   
+   if (currentMillis() > previousPanMillis + 10000 && PAN) {
+    basicPanRoutine();
    }
 }
 
@@ -55,7 +82,7 @@ void listenToMic() {
   //loopBlue();
   int volume = analogRead(ANALOG_INPUT_1);
 
-  if (volume < VOLUME_THRESHOLD) {
+  if (volume > VOLUME_THRESHOLD) {
     // turn LED on:
     digitalWrite(LED_BUILTIN, 0);
     setColour(red, green, blue);
@@ -65,7 +92,8 @@ void listenToMic() {
     setColour(0, 0, 0);
   }
 
-  delay(DELAY);                      
+  // Need mic delay. Really want it to be beats PM calculation
+  //delay(DELAY);                      
   //Serial.println(volume);
 }
 
@@ -120,25 +148,52 @@ void setColour(unsigned int r, unsigned int g, unsigned int b) {
 void loopRed() {
   for (int i=0; i <=255; i++) {
     setColour(i, 0, 0);
-    delay(20);
+    //delay(20);
   }
 }
 
 void loopGreen() {
   for (int i=0; i <=255; i++) {
     setColour(0, i, 0);
-    delay(20);
+    //delay(20);
   }
 }
 
 void loopBlue() {
   for (int i=0; i <=255; i++) {
     setColour(0, 0, i);
-    delay(20);
+    //delay(20);
   }
 }
 
+void basicPanRoutine() {
+    panServo.attach(PAN_OUTPUT_PIN);
+    
+  
+    for (int pan = PAN_CENTER_ANGLE; pan <= PAN_END_ANGLE; pan += 1) { 
+      panServo.write(pan);              
+      //delay(PAN_SPEED);                   
+  }
+
+  //delay(1000);  
+  
+  for (int pan = PAN_END_ANGLE; pan >= PAN_START_ANGLE; pan -= 1) {
+    panServo.write(pan);             
+    //delay(PAN_SPEED);                      
+  }
+
+  for (int pan = PAN_START_ANGLE; pan <= PAN_CENTER_ANGLE; pan += 1) {
+    panServo.write(pan);             
+    //delay(PAN_SPEED);                      
+  }
+
+  panServo.detach(PAN_OUTPUT_PIN);
+ 
+  //delay(5000);
+}
+
 void handleRoot() {
+  // TODO: make this pretty. Include status.
   String message = "hello from ";
   message += DNS;
   server.sendHeader("Access-Control-Allow-Origin", "*");
@@ -149,34 +204,79 @@ void handleSetColour() {
   red = server.arg("r").toInt();
   green = server.arg("g").toInt();
   blue = server.arg("b").toInt();
+  int pan = server.arg("p").toInt();
   setColour(red, green, blue);
-  String message = "{\"red\":"; 
-  message += red;
-  message += ",\"green\":";
-  message += green;
-  message += ",\"blue\":";
-  message += blue; 
-  message += "}";
 
+  if (pan == 1) {
+    PAN = true;
+  }
+  else {
+    PAN = false;
+  }
+
+  Serial.println("Colour set to:\n");
+  Serial.println("Red:");
+  Serial.println(red);
+  Serial.println("\nGreen:");
+  Serial.println(green);
+  Serial.println("\nBlue:");
+  Serial.println(blue);
+  Serial.println("\nPan:");
+  Serial.println(pan);
+  
   server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(204);
 }
 
 void handleNotFound(){
-  String message = "File Not Found\n\n";
-  message += "URI: ";
-  message += server.uri();
-  message += "\nMethod: ";
-  message += (server.method() == HTTP_GET)?"GET":"POST";
-  message += "\nArguments: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i=0; i<server.args(); i++){
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
-  message += server.arg("r");
-  message += "\n";
-  
+  String message = "File Not Found";
+  server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(404, "text/plain", message);
+}
+
+class Sweeper {
+  Servo servo;
+  int position;
+  int increment;
+  int updateInterval;
+  unsigned long lastUpdate
+  const int PAN_SPEED = 30;
+  const int PAN_START_ANGLE = 80;
+  const int PAN_END_ANGLE= 160;
+  const int PAN_CENTER_ANGLE = 120;
+
+  public: 
+  Sweeper(int interval)
+  {
+    updateInterval = interval;
+    increment = 1;
+  }
+  
+  void Attach(int pin)
+  {
+    servo.attach(pin);
+  }
+  
+  void Detach()
+  {
+    servo.detach();
+  }
+  
+  void Update()
+  {
+    if((millis() - lastUpdate) > updateInterval)  // time to update
+    {
+      lastUpdate = millis();
+      pos += increment;
+      servo.write(pos);
+      
+      
+      if ((pos >= PAN_END_ANGLE) || (pos <= PAN_START_ANGLE)) // end of sweep
+      {
+        // reverse direction
+        increment = -increment;
+      }
+    }
+  }
 }
 

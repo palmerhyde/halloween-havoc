@@ -10,7 +10,7 @@ void setup() {
 }
 
 void loop() {
-  //red();
+  red();
   
   //redBlink();
   //rgb();
@@ -21,11 +21,11 @@ void loop() {
 }
 
 void red() {
-  // 10 Bit -> 8 Bit (Failure lesson)
+  // 10 Bit -> 8 Bit
   analogWriteRange(255);
   
   // Reverse HIGH / LOW
-  analogWrite(RED_LED_OUTPUT, 255 - 255); // Failure lesson - Common Anode +
+  analogWrite(RED_LED_OUTPUT, 255 - 255);
   analogWrite(GREEN_LED_OUTPUT, 255 - 0);
   analogWrite(BLUE_LED_OUTPUT, 255 - 0);
 }
@@ -80,8 +80,3 @@ void loopBlue() {
     delay(20);
   }
 }
-
-
-
-
-
